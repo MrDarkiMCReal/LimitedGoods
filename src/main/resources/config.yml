@@ -1,0 +1,170 @@
+##Использование: любой ключ нельзя менять. менять можно     ! ТОЛЬКО ЗНАЧЕНИЯ !
+#
+#Список трейтов
+#secretshop_armorsmith
+#secretshop_ender
+#secretshop_witch
+#secretshop_armory
+#secretshop_farmer
+#secretshop_librarian
+#secretshop_archer
+#
+#У одного NPC максимум может быть один трейт.
+#У трейта может быть много NPC. Т.е можно на карте поставить 10 торговцев с трейтом secretshop_armory
+#Но нельзя поставить торговца с двумя трейтами
+#
+#Как добавить трейды. Выбираем группу трейдера. Например фермер.
+#ключи - trades или farmer менять нельзя.
+#Все, что внутри ключа farmer это лист(список) предметов с рецептами.
+#один предмет выглядит так
+# - (черточку) нужно ставить только перед item и перед каждым предметом в ключе recipe
+#
+#    - item: CREEPER_SPAWN_EGG 1
+#      recipe:
+#        - NETHERITE_INGOT 3
+#        - GUNPOWDER 30
+#
+#Формат предметов:
+#В данном случае при трейде у нас будетполучен предмет "яйцо крипера". 2 предмета для трейда будут: "незеритовый слиток 3шт" и "порох" 30 шт.
+#ВНИМАНИЕ. Необходимо обязательно указывать и предмет, и количество.
+#список предметов можно взять тут(учитывайте верхний регистр) https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+# Формат предметов можно посмотреть тут https://github.com/MrDarkiMCReal/SatanicLib/wiki/Syntax-of-ItemStack
+#
+# Сохраненные предметы:
+# также, если предмет начинается с [saved] то предмет берется из конфига savedItems.yml
+#Например '[saved] godSword' Это полезно, если нужен предмет с другого плагина.
+#Обратите внимание, если вы сохранили до этого предмет из плагина *например ExecutableItems* и изменили его в плагине ExecutableItems то нужно его сохранить еще раз, иначе предметы не будут совпадать.
+#Сохранить предмет можно коммандой /goods save <любое название предмета>
+#Предварительно нужно взять в руку предмет
+#
+#
+#trades:
+#  farmer:
+#    - item: CREEPER_SPAWN_EGG 1
+#      recipe:
+#        - NETHERITE_INGOT 3
+#        - GUNPOWDER 30
+#    - item: ENCHANTED_GOLDEN_APPLE 16
+#      recipe:
+#        - NETHERITE_INGOT 3
+#        - GOLDEN_APPLE 6
+#
+#Комманды:
+# /goods reload
+# /goods save <название предмета>
+# право на использование комманд secretshop.admin
+#
+#
+timers: #Время указывать в тиках (в 1й секунде 20 тиков). 10 секунд = 200 тиков
+  delayPluginBoot: 48000 #40мин. После перезапуска сервера, первый старт запуск магазина будет через 40 минут. Можно просто указать такое же значение, как и
+  # у timeBetweenActivation если не требуется, что бы после перезапуска сервера был ускоренная активация магазинов. То поставьте значение как у timeBetweenActivation
+  activeTime: 48000 #40мин. Магаз будет активен на протяжении 40 минут
+  timeBetweenActivation: 288000 #4часа. Как только магазин будет закрыт, через 4 часа он активируется и магазин обновится
+  #в notifications время указывается в секундах
+  notifications: #сообщение будет отправлено за 10, за 5, и за 3 минуты перед обновлением магаза
+    - 300 #300 в секундах. 5 мин Это значение должно быть меньше, чем timeBetweenActivation
+    - 900 #900 в секундах. 15 мин Это значение должно быть меньше, чем timeBetweenActivation
+    - 1800 #1800 в секундах. 30 минут Это значение должно быть меньше, чем timeBetweenActivation
+messages: #эту строчку нельзя менять
+  end: #эту строчку нельзя менять
+    - " "
+    - "&#5642D9Торги закончены. Магазин закрыт."
+    - "&#5642D9Следующее открытие через &l{time}"
+    - " "
+  start: #эту строчку нельзя менять
+    - " "
+    - "&#5642D9Торги открыты. Магазин открыт."
+    - "&#5642D9Закрытие через &l{time}"
+    - " "
+  notification: #эту строчку нельзя менять
+    - " "
+    - "&#5642D9Торги скоро будут открыты."
+    - "&#5642D9Открытие через &l{time}"
+    - " "
+  shopDisabled: #эту строчку нельзя менять
+    - " "
+    - "&#5642D9Магазин закрыт."
+    - "&#5642D9Возвращайтесь позже"
+    - " "
+#тут название трейта без "secretshop_" В скобках указывается имя торговца(только те, что заготовил разработчик, тоесть я. Добавлять новые нельзя, только в коде прописывать). Формат хекс цвета &#5642D9
+displaynames: #эту строчку нельзя менять
+  farmer: "&eФермер" #тут можно менять только значение, т.е то, что в " " скобках
+  librarian: "&#5642D9Библиотекарь" #тут можно менять только значение, т.е то, что в " " скобках
+  armory: "&eОружейник" #тут можно менять только значение, т.е то, что в " " скобках
+  armorsmith: "&eЭксперт по броне" #тут можно менять только значение, т.е то, что в " " скобках
+  witch: "&#5642D9В&#585EDAе&#5A7BDCд&#5B97DDь&#5DB4DFм&#5FD0E0а" #тут можно менять только значение, т.е то, что в " " скобках
+  archer: "&eСтрелок" #тут можно менять только значение, т.е то, что в " " скобках
+  ender: "&eЭндер" #тут можно менять только значение, т.е то, что в " " скобках
+#По поводу формата предметов можно посмотреть гайд тут https://github.com/MrDarkiMCReal/SatanicLib/wiki/Syntax-of-ItemStack
+#Или использовать онлайн парсер yaml файла, что бы убедиться, что все выполнено правильно. https://yaml-online-parser.appspot.com/
+#Если предмет указывать с одинарными скобками ' ' то проблем быть не должно.
+#пример - item: 'CREEPER_SPAWN_EGG 1'
+#Но конкретно в этом примере это не обязательно
+#
+#Это нужно для того, что бы yaml мог прочитать файл, если в - item будет тег например кастомного названия предмета.
+#Пример - item: 'NETHERITE_SWORD 1 name:"&cМеч пронзающий души" lore:"&8Куплен у &e&lОружейника \n&8На локации: &e&lторговый лес" enchants:"sharpness:7,mending:1,unbreaking:5,fire_aspect:2,bane_of_arthropods:3,smite:2"'
+#Тут одинарные скобки обязательны, иначе yaml не сможет быть прочитан.
+trades: #эту строчку нельзя менять
+  farmer: #эту строчку нельзя менять
+    - item: CREEPER_SPAWN_EGG 1
+      recipe:
+        - NETHERITE_INGOT 3
+        - GUNPOWDER 30
+    - item: ENCHANTED_GOLDEN_APPLE 16
+      recipe:
+        - NETHERITE_INGOT 3
+        - GOLDEN_APPLE 6
+  librarian: #эту строчку нельзя менять
+    - item: ENCHANTED_BOOK 1 book:"efficiency:10"
+      recipe:
+        - NETHERITE_INGOT 4
+        - TURTLE_HELMET 1
+    - item: ENCHANTED_BOOK 1 book:"efficiency:10"
+      recipe:
+        - NETHERITE_INGOT 5
+        - NETHERITE_PICKAXE 1 enchants:"efficiency:5"
+  armory: #эту строчку нельзя менять
+    - item: 'NETHERITE_SWORD 1 name:"&cМеч пронзающий души" lore:"&8Куплен у &e&lОружейника \n&8На локации: &e&lторговый лес" enchants:"sharpness:7,mending:1,unbreaking:5,fire_aspect:2,bane_of_arthropods:3,smite:2"'
+      recipe:
+        - NETHERITE_INGOT 3
+        - PUFFERFISH 2
+    - item: 'NETHERITE_SWORD 1 name:"&cМеч пронзающий души" lore:"&8Куплен у &e&lОружейника \n&8На локации: &e&lторговый лес" enchants:"sharpness:7,mending:1,unbreaking:5,fire_aspect:2,bane_of_arthropods:3,smite:2"'
+      recipe:
+        - NETHERITE_INGOT 2
+        - PUFFERFISH 10
+  armorsmith: #эту строчку нельзя менять
+    - item: 'NETHERITE_CHESTPLATE 1 enchants:"protection:5,mending:1,fire_protection:3,projectile_protection:3,unbreaking:5"'
+      recipe:
+        - NETHERITE_INGOT 4
+        - DIAMOND 64
+    - item: 'NETHERITE_LEGGINGS 1 enchants:"protection:5,mending:1,fire_protection:3,projectile_protection:3,unbreaking:5"'
+      recipe:
+        - NETHERITE_INGOT 3
+        - DIAMOND 32
+  witch: #эту строчку нельзя менять
+    - item: POTION 1 potion:"strength:2:3000"
+      recipe:
+        - NETHERITE_INGOT 1
+        - RED_DYE 16
+    - item: POTION 1 potion:"speed:2:3000"
+      recipe:
+        - NETHERITE_INGOT 1
+        - RABBIT_FOOT 16
+  archer: #эту строчку нельзя менять
+    - item: BOW 1 enchants:"power:5,unbreaking:3,flame:1,infinity:1"
+      recipe:
+        - NETHERITE_INGOT 2
+        - ARROW 32
+    - item: BOW 1 enchants:"power:5,unbreaking:3,flame:1,infinity:1"
+      recipe:
+        - NETHERITE_INGOT 1
+        - ARROW 64
+  ender: #эту строчку нельзя менять
+    - item: '[saved] elytraForEnder' #предмет с тегом [saved] берется из файла savedItems.yml
+      recipe:
+        - NETHERITE_INGOT 4
+        - ENDER_PEARL 16
+    - item: '[saved] elytraForEnder' #предмет с тегом [saved] берется из файла savedItems.yml
+      recipe:
+        - NETHERITE_INGOT 2
+        - CHORUS_FRUIT 64

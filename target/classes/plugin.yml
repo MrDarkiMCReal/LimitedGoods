@@ -1,0 +1,12 @@
+name: SecretShop
+version: '1.0'
+main: org.mrdarkimc.limitedgoods.LimitedGoods
+author: MrDarkiMC
+website: www.kwork.ru/user/mrdarkimc
+api-version: '1.19'
+description: Плагин на кастомные trait'ы для плагина Citizens. Которые добавляют магазины и обновляются спустя время.
+depend:
+  - Citizens
+commands:
+  goods:
+    description: Главная комманда
