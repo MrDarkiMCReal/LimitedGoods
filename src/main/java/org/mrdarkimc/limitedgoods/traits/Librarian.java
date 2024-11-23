@@ -16,7 +16,7 @@ import java.util.Map;
 @TraitName("secretshop_librarian") //todo change this
 public class Librarian extends Trait { //todo change this
     public Librarian() {
-        super("secretshop_witch"); //todo change this
+        super("secretshop_librarian"); //todo change this
     }
     private Menu menu;
 
